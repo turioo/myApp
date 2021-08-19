@@ -1,20 +1,46 @@
-import React from 'react';
-import { View } from 'react-native';
-import { Button } from 'react-native-paper';
+import * as React from 'react';
 
-import { useDispatch } from 'react-redux';
-import * as loginActions from 'app/store/actions/loginActions';
-import styles from './styles';
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from '@react-navigation/stack';
+
+import Auth from 'app/screens/Home/Auth';
+import SignIn from 'app/screens/Home/SignIn';
+import SignUp from 'app/screens/Home/SignUp';
+
+const Stack = createStackNavigator();
+
 const Home: React.FC = () => {
-  const dispatch = useDispatch();
-  const onLogout = () => dispatch(loginActions.logOut());
-
   return (
-    <View style={styles.container}>
-      <Button icon="logout" mode="outlined" onPress={onLogout}>
-        Logout
-      </Button>
-    </View>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      }}
+      initialRouteName="Auth">
+      <Stack.Screen
+        name="Auth"
+        component={Auth}
+        options={{
+          title: 'Authorization',
+        }}
+      />
+      <Stack.Screen
+        name="SignIn"
+        component={SignIn}
+        options={{
+          title: 'SignIn',
+        }}
+      />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUp}
+        options={{
+          title: 'SignUp',
+        }}
+      />
+    </Stack.Navigator>
   );
 };
 
