@@ -9,7 +9,8 @@ import Button from '../../../atoms/Button';
 
 import { useForm, Controller } from 'react-hook-form';
 import ValidationError from '../../../atoms/ValidationError';
-
+import { useDispatch } from 'react-redux';
+import { actions } from 'app/store/modules/login/slice';
 type Props = {
   navigation: {
     navigate: (param: string) => void;
@@ -27,8 +28,10 @@ const SignIn = ({ navigation }: Props): JSX.Element => {
     formState: { errors },
   } = useForm();
 
+  const dispatch = useDispatch();
+
   const onSubmit = (data: FormData) => {
-    console.log(data);
+    dispatch(actions.fetchDataTrigger(data));
   };
   return (
     <View style={styles.wrapper}>
