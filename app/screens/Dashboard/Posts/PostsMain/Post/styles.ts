@@ -1,0 +1,171 @@
+import { StyleSheet } from 'react-native';
+
+const styles = StyleSheet.create({
+  wrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    position: 'relative',
+    paddingVertical: 15,
+  },
+  line: {
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    width: '100%',
+    height: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  info: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  priorityRed: {
+    height: 20,
+    width: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#BC181E',
+    position: 'relative',
+    marginRight: 10,
+    marginTop: 5,
+  },
+  priorityRoundRed: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    transform: [{ translateX: 2 }, { translateY: 2 }],
+    height: 12,
+    width: 12,
+    backgroundColor: '#BC181E',
+    borderRadius: 6,
+  },
+  priorityYellow: {
+    height: 20,
+    width: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#E19A30',
+    position: 'relative',
+    marginRight: 10,
+    marginTop: 5,
+  },
+  priorityRoundYellow: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    transform: [{ translateX: 2 }, { translateY: 2 }],
+    height: 12,
+    width: 12,
+    backgroundColor: '#E19A30',
+    borderRadius: 6,
+  },
+  priorityWhite: {
+    height: 20,
+    width: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#C4C4C4',
+    position: 'relative',
+    marginRight: 10,
+    marginTop: 5,
+  },
+  priorityRoundWhite: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    transform: [{ translateX: 2 }, { translateY: 2 }],
+    height: 12,
+    width: 12,
+    backgroundColor: '#C4C4C4',
+    borderRadius: 6,
+  },
+  data: {
+    width: 350,
+  },
+  title: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    marginBottom: 5,
+    width: 285,
+  },
+  titleMain: {
+    fontFamily: 'Raleway-Bold',
+    fontSize: 18,
+    color: '#FFFFFF',
+  },
+  titleDate: {
+    marginLeft: 10,
+  },
+  titleDateText: {
+    fontFamily: 'Raleway-Regular',
+    fontSize: 14,
+    color: '#BBBBBB',
+  },
+  description: {
+    fontFamily: 'Raleway-Regular',
+    fontSize: 16,
+    color: '#E0E0E0',
+  },
+  types: {
+    marginTop: 10,
+  },
+  type: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  typeIcon: {
+    marginRight: 8,
+  },
+  typeTextGreen: {
+    fontFamily: 'Raleway-Regular',
+    fontSize: 14,
+    color: '#6DA832',
+  },
+  typeTextYellow: {
+    fontFamily: 'Raleway-Regular',
+    fontSize: 14,
+    color: '#E19A30',
+  },
+  typeTextBlue: {
+    fontFamily: 'Raleway-Regular',
+    fontSize: 14,
+    color: '#74B9E1',
+  },
+  tools: {
+    position: 'absolute',
+    right: 0,
+    top: 17,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  tool: {
+    marginHorizontal: 5,
+  },
+  bottom: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+  },
+  edit: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  editText: {
+    fontFamily: 'Raleway-Regular',
+    fontSize: 12,
+    color: '#E0E0E0',
+  },
+  editPhoto: {
+    marginLeft: 10,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: 'red',
+  },
+});
+
+export default styles;

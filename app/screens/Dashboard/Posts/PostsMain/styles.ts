@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     display: 'flex',
-    justifyContent: 'center',
   },
   background: {
     width: '100%',
@@ -20,14 +19,14 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: 15,
+    paddingTop: 15,
+    paddingBottom: 52,
     zIndex: 3,
-    alignItems: 'center',
   },
   title: {
     fontFamily: 'Raleway-Black',
     fontSize: 35,
     lineHeight: 42,
-    textAlign: 'center',
     color: 'white',
     marginBottom: 25,
   },

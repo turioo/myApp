@@ -6,10 +6,10 @@ import withError from '../hoc/withError';
 import { $apiClient } from 'app/utils/apiClient';
 
 import Home from 'app/screens/Home';
-import Dashboard from 'app/screens/Dashboard';
 import { useSelector } from 'react-redux';
 import { selectIsAuthenticated } from 'app/store/modules/app/selectors';
-
+import Toast from 'react-native-toast-message';
+import Dashboard from 'app/screens/Dashboard';
 const Stack = createStackNavigator();
 
 const App: React.FC = () => {
@@ -39,6 +39,7 @@ const App: React.FC = () => {
           />
         )}
       </Stack.Navigator>
+      <Toast ref={ref => Toast.setRef(ref)} />
     </NavigationContainer>
   );
 };

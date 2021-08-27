@@ -71,9 +71,9 @@ const useHttpClient = (
   // response interceptor
   const resInterceptor = httpClientInstance.interceptors.response.use(
     (res: AxiosResponse) => {
-      console.log(
-        '---------------------------------' + JSON.stringify(res.data),
-      );
+      // console.log(
+      //   '---------------------------------' + JSON.stringify(res.data),
+      // );
       return camelCaseKeys(res.data.data, { deep: true });
     },
     async (err: AxiosError) => {
