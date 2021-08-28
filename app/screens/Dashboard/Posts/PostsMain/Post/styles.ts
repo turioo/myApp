@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: '100%',
     height: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#4f4f4f',
   },
   info: {
     display: 'flex',
@@ -164,7 +164,6 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: 'red',
   },
 });
 

@@ -1,13 +1,56 @@
-import React from 'react';
-import { Text, View, Image } from 'react-native';
+import React, { useState } from 'react';
+import { TouchableOpacity, View, Text } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import styles from './styles';
+import Header from '../../../../features/Header';
+import Input from '../../../../atoms/Input';
+import { Controller, useForm } from 'react-hook-form';
+import Button from '../../../../atoms/Button';
+import ValidationError from '../../../../atoms/ValidationError';
 import Svg, { Path } from 'react-native-svg';
-import { IPost } from 'app/store/modules/posts/types';
+import { StyleSheet } from 'react-native';
+import DismissKeyboardView from '../../../../hoc/dismissKeyboard';
 
-type IData = {
-  data: IPost;
+type Props = {
+  navigation: {
+    navigate: (param: string) => void;
+    goBack: () => void;
+  };
 };
-const Post = ({ data }: IData) => {
+type ColorProps = {
+  color: string;
+};
+type FormData = {
+  title: string;
+  text: string;
+  type: number;
+  priority: number;
+};
+const stylesActive = StyleSheet.create({
+  type: {
+    width: 300,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderColor: '#BC181E',
+    marginBottom: 10,
+  },
+  priority: {
+    width: 90,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderColor: '#BC181E',
+    marginBottom: 10,
+  },
+});
+const PostsCreate = ({ navigation }: Props): JSX.Element => {
   function SvgToday() {
     return (
       <Svg width="15" height="15" viewBox="0 0 12 12">
@@ -40,108 +83,139 @@ const Post = ({ data }: IData) => {
       </Svg>
     );
   }
-  function SvgEdit() {
+  function SvgPriority(props: ColorProps) {
     return (
-      <Svg width="20" height="20" viewBox="0 0 20 20">
+      <Svg width="12" height="17" viewBox="0 0 12 17">
         <Path
-          d="M1.99942 16H1.8913C1.74873 15.998 1.61273 15.9397 1.51294 15.8379C1.37999 15.7024 1.31978 15.5116 1.35076 15.3243L2.48585 10.1082C2.51368 10.0123 2.57032 9.92745 2.64802 9.86491L11.4588 1.02718C12.093 0.363727 12.9734 -0.00796089 13.8912 0.000160881C14.8032 -0.00568473 15.6794 0.354519 16.3236 1.00012C16.9658 1.65762 17.3248 2.54052 17.3236 3.45957C17.3294 4.37154 16.9692 5.24776 16.3236 5.89197L7.48586 14.7298C7.41137 14.8009 7.31722 14.848 7.21562 14.8649L1.99942 16ZM16.2427 3.43241C16.2426 2.13381 15.1898 1.08113 13.8912 1.08124C13.2737 1.07849 12.6805 1.32163 12.2426 1.75684L15.5669 5.10819C16.0073 4.6737 16.2514 4.07822 16.2425 3.45957L16.2427 3.43241ZM14.8101 5.86496L11.4858 2.54067L3.78316 10.2433L7.10745 13.5406L14.8101 5.86496ZM6.02637 14L3.35074 11.3244L2.59396 14.7568L6.02637 14ZM0.945811 18.9189H19.0538C19.3523 18.9189 19.5943 19.1609 19.5943 19.4595C19.5943 19.758 19.3523 20 19.0538 20H0.945811C0.647271 20 0.405273 19.758 0.405273 19.4595C0.405273 19.1609 0.647271 18.9189 0.945811 18.9189Z"
-          fill="#E0E0E0"
+          d="M11.2624 0.686973C10.5373 0.224719 9.76424 0 8.89912 0C7.86405 0 6.84802 0.32383 5.86546 0.637002C4.90559 0.942936 3.99893 1.2319 3.10152 1.23197C3.1014 1.23197 3.10131 1.23197 3.10118 1.23197C2.50121 1.23197 1.95796 1.09703 1.44824 0.820848V0.498047C1.44824 0.222992 1.23837 0 0.979492 0C0.720617 0 0.510742 0.222992 0.510742 0.498047V1.114V7.88398V16.502C0.510742 16.777 0.720617 17 0.979492 17C1.23837 17 1.44824 16.777 1.44824 16.502V8.68106C1.96596 8.89356 2.51237 8.99805 3.10155 8.99805C4.13659 8.99805 5.15252 8.67422 6.13502 8.36104C7.09496 8.05508 8.00168 7.76608 8.89912 7.76608C9.58949 7.76608 10.2047 7.94435 10.78 8.31111C10.9248 8.40341 11.1051 8.40587 11.2521 8.31745C11.3991 8.22903 11.4899 8.06348 11.4899 7.88405V1.11403C11.4899 0.939084 11.4036 0.776953 11.2624 0.686973ZM5.86568 7.40699C4.90571 7.71295 3.99899 8.00195 3.10159 8.00195C2.5014 8.00195 1.95802 7.86721 1.44827 7.59103V1.91137C1.9659 2.12384 2.51221 2.2281 3.10121 2.22806C3.10131 2.22806 3.10152 2.22806 3.10165 2.22806C4.13659 2.228 5.15246 1.9042 6.13487 1.59106C7.09484 1.28509 8.00165 0.996094 8.89912 0.996094C9.4993 0.996094 10.0427 1.13083 10.5524 1.40698V7.08671C10.0347 6.87421 9.48827 6.76998 8.89912 6.76998C7.86412 6.76998 6.84815 7.09381 5.86568 7.40699Z"
+          fill={props.color}
         />
       </Svg>
     );
   }
-  function SvgDelete() {
-    return (
-      <Svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-        <Path
-          d="M11.4887 10.001L19.6917 1.79796C20.1028 1.38686 20.1028 0.72038 19.6917 0.309327C19.2806 -0.101766 18.6141 -0.101766 18.2031 0.309327L9.99998 8.51235L1.79695 0.309327C1.38586 -0.101766 0.719374 -0.101766 0.30832 0.309327C-0.102734 0.720419 -0.102773 1.3869 0.30832 1.79796L8.51135 10.001L0.30832 18.204C-0.102773 18.6151 -0.102773 19.2816 0.30832 19.6926C0.719413 20.1037 1.3859 20.1037 1.79695 19.6926L9.99998 11.4896L18.203 19.6926C18.6141 20.1037 19.2806 20.1037 19.6916 19.6926C20.1027 19.2815 20.1027 18.6151 19.6916 18.204L11.4887 10.001Z"
-          fill="#E0E0E0"
-        />
-      </Svg>
-    );
-  }
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data: FormData) => {
+    data.type = type;
+    data.priority = priority;
+    console.log(data);
+    navigation.goBack();
+  };
+
+  const [type, setType] = useState(1);
+  const [priority, setPriority] = useState(0);
+
   return (
     <View style={styles.wrapper}>
-      <View style={styles.info}>
-        {data.priority === 1 && (
-          <View style={styles.priorityRed}>
-            {data.status === 1 && <View style={styles.priorityRoundRed} />}
-          </View>
+      <View style={styles.container}>
+        <Header navigation={navigation} />
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              placeholder="Title"
+              security={false}
+            />
+          )}
+          name="title"
+          defaultValue=""
+        />
+        {errors.title?.type === 'required' && (
+          <ValidationError message={'This field is required'} />
         )}
-        {data.priority === 2 && (
-          <View style={styles.priorityYellow}>
-            {data.status === 1 && <View style={styles.priorityRoundYellow} />}
-          </View>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              multiline={true}
+              placeholder="Description"
+              security={false}
+            />
+          )}
+          name="description"
+          defaultValue=""
+        />
+        {errors.description?.type === 'required' && (
+          <ValidationError message={'This field is required'} />
         )}
-        {data.priority === 0 && (
-          <View style={styles.priorityWhite}>
-            {data.status === 1 && <View style={styles.priorityRoundWhite} />}
-          </View>
-        )}
-        <View style={styles.data}>
-          <View style={styles.title}>
-            <Text style={styles.titleMain}>{data.name}</Text>
-            <View style={styles.titleDate}>
-              <Text style={styles.titleDateText}>
-                {data.user?.name}, {data.createdAt.time}
-              </Text>
-            </View>
-          </View>
-          <Text style={styles.description}>{data.text}</Text>
-          <View style={styles.bottom}>
-            <View style={styles.types}>
-              {data.category.id === 1 && (
-                <View style={styles.type}>
-                  <View style={styles.typeIcon}>
-                    <SvgToday />
-                  </View>
-                  <Text style={styles.typeTextGreen}>Today</Text>
-                </View>
-              )}
-              {data.category.id === 2 && (
-                <View style={styles.type}>
-                  <View style={styles.typeIcon}>
-                    <SvgWeek />
-                  </View>
-                  <Text style={styles.typeTextYellow}>This week</Text>
-                </View>
-              )}
-              {data.category.id === 3 && (
-                <View style={styles.type}>
-                  <View style={styles.typeIcon}>
-                    <SvgMonthly />
-                  </View>
-                  <Text style={styles.typeTextBlue}>This month</Text>
-                </View>
-              )}
-            </View>
-            {data.lastChangeUser && (
-              <View style={styles.edit}>
-                <Text style={styles.editText}>
-                  Edited: {data.updatedAt.date}, {data.updatedAt.time}
-                </Text>
-                <Image
-                  style={styles.editPhoto}
-                  source={{
-                    uri: data.lastChangeUser.photo,
-                  }}
-                />
+        <View style={styles.types}>
+          <TouchableOpacity onPress={() => setType(1)}>
+            <View style={type === 1 ? stylesActive.type : styles.type}>
+              <View style={styles.typeImage}>
+                <SvgToday />
               </View>
-            )}
-          </View>
+              <Text style={styles.typeTextGreen}>Today</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setType(2)}>
+            <View style={type === 2 ? stylesActive.type : styles.type}>
+              <View style={styles.typeImage}>
+                <SvgWeek />
+              </View>
+              <Text style={styles.typeTextGreen}>This week</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setType(3)}>
+            <View style={type === 3 ? stylesActive.type : styles.type}>
+              <View style={styles.typeImage}>
+                <SvgMonthly />
+              </View>
+              <Text style={styles.typeTextGreen}>This month</Text>
+            </View>
+          </TouchableOpacity>
         </View>
+        <View style={styles.prioritys}>
+          <TouchableOpacity onPress={() => setPriority(0)}>
+            <View
+              style={priority === 0 ? stylesActive.priority : styles.priority}>
+              <View style={styles.priorityImage}>
+                <SvgPriority color="#FFFFFF" />
+              </View>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setPriority(1)}>
+            <View
+              style={priority === 1 ? stylesActive.priority : styles.priority}>
+              <View style={styles.priorityImage}>
+                <SvgPriority color="#E19A30" />
+              </View>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setPriority(2)}>
+            <View
+              style={priority === 2 ? stylesActive.priority : styles.priority}>
+              <View style={styles.priorityImage}>
+                <SvgPriority color="#BC181E" />
+              </View>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity onPress={handleSubmit(onSubmit)}>
+          <Button title={'Add Post'} />
+        </TouchableOpacity>
       </View>
-      <View style={styles.tools}>
-        <View style={styles.tool}>
-          <SvgEdit />
-        </View>
-        <View style={styles.tool}>
-          <SvgDelete />
-        </View>
-      </View>
-      <View style={styles.line} />
+      <LinearGradient
+        colors={['transparent', '#ac2121']}
+        style={styles.background}
+      />
     </View>
   );
 };
-
-export default Post;
+export default PostsCreate;

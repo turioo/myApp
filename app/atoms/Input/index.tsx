@@ -5,6 +5,7 @@ import styles from './styles';
 type Props = {
   value: string;
   placeholder: string;
+  multiline?: boolean;
   security: boolean;
   onBlur: () => void;
   onChangeText: () => void;
@@ -12,6 +13,7 @@ type Props = {
 
 const Input = ({
   value,
+  multiline,
   onBlur,
   onChangeText,
   security,
@@ -21,6 +23,7 @@ const Input = ({
     <TextInput
       style={styles.input}
       onBlur={onBlur}
+      multiline={multiline}
       onChangeText={onChangeText}
       value={value}
       secureTextEntry={security}

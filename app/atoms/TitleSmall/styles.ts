@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   wrap: {
-    marginVertical: 5,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-end',

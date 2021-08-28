@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     width: 300,
     marginBottom: 15,
     fontSize: 16,
-    height: 45,
+    height: "auto",
   },
 });
 

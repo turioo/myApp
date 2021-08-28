@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#20212E',
     width: '100%',
     height: '100%',
-    display: 'flex',
   },
   background: {
     width: '100%',
@@ -51,6 +50,24 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontSize: 16,
     height: 45,
+  },
+  flatlist: {
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  addPost: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 5,
+  },
+  addPostImage: {
+    marginRight: 10,
+  },
+  addPostText: {
+    fontFamily: 'Raleway-Bold',
+    fontSize: 18,
+    color: '#FFFFFF',
   },
 });
 

@@ -10,7 +10,6 @@ import { IProfile } from 'app/store/modules/profile/types';
 export function* fetchProfileSaga() {
   try {
     const data: IProfile = yield call(getData);
-    yield console.log('data');
     yield put(profileActions.fetchDataSuccess(data));
   } catch (err) {
     yield put(profileActions.fetchDataFailed(err));

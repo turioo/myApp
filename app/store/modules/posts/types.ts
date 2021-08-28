@@ -8,7 +8,7 @@ export interface IPost {
     time: string;
   };
   id: number;
-  last_change_user?: {
+  lastChangeUser?: {
     email: string;
     id: number;
     name: string;

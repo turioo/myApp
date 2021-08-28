@@ -8,6 +8,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     fetchDataTrigger(state) {
+      state.data = null;
       state.fetch.loading = true;
       state.fetch.done = false;
       state.fetch.error = null;

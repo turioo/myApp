@@ -27,7 +27,6 @@ const Profile: React.FC = () => {
   }, [dispatch]);
 
   const data = useSelector(getData);
-  console.log(data);
   return (
     <View style={styles.wrapper}>
       <TouchableOpacity

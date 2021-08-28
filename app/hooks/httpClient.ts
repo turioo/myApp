@@ -30,9 +30,9 @@ const useHttpClient = (
     async (config: AxiosRequestConfig) => {
       setError(null);
 
-      console.log(
-        '++++++++++++++++++++++++++++++++++++++++++++' + JSON.stringify(config),
-      );
+      // console.log(
+      //   '++++++++++++++++++++++++++++++++++++++++++++' + JSON.stringify(config),
+      // );
       // formatting data
       if (config.data) {
         config.data =
@@ -42,7 +42,7 @@ const useHttpClient = (
       }
 
       // formatting headers
-      const accessToken = await deviceStorage.getItem('accessToken');
+      const accessToken = await deviceStorage.getItem('access_token');
       if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
       }
