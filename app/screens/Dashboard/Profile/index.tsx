@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { Image, View, TouchableOpacity, Text } from 'react-native';
+import {
+  Image,
+  View,
+  TouchableOpacity,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import styles from './styles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +14,7 @@ import { actions as logoutActions } from 'app/store/modules/logout/slice';
 import Button from 'app/atoms/Button/index';
 import Svg, { Path } from 'react-native-svg';
 import { getData } from 'app/store/modules/profile/selectors';
+import { selectIsLoading } from 'app/store/modules/profile/selectors';
 
 const Profile: React.FC = () => {
   function SvgLogout() {
@@ -27,8 +34,14 @@ const Profile: React.FC = () => {
   }, [dispatch]);
 
   const data = useSelector(getData);
+  const isFetching = useSelector(selectIsLoading);
   return (
     <View style={styles.wrapper}>
+      {isFetching && (
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color="#BC181E" />
+        </View>
+      )}
       <TouchableOpacity
         style={styles.logout}
         onPress={() => dispatch(logoutActions.fetchDataTrigger())}>

@@ -11,18 +11,16 @@ import Svg, { Path } from 'react-native-svg';
 import { StyleSheet } from 'react-native';
 import { actions as postsActions } from 'app/store/modules/posts/slice';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectIsAdd } from 'app/store/modules/posts/selectors';
+import { selectIsUpdate } from 'app/store/modules/posts/selectors';
+import { StackScreenProps } from '@react-navigation/stack';
+import { EditTypes } from 'app/screens/Dashboard/Posts/types';
+import NavigationService from 'app/navigation/NavigationService';
 
-type Props = {
-  navigation: {
-    navigate: (param: string) => void;
-    goBack: () => void;
-  };
-};
 type ColorProps = {
   color: string;
 };
 type FormData = {
+  id: number;
   title: string;
   text: string;
   category_id: number;
@@ -52,7 +50,10 @@ const stylesActive = StyleSheet.create({
     marginBottom: 10,
   },
 });
-const PostsCreate = ({ navigation }: Props): JSX.Element => {
+const PostsEdit = ({
+  route,
+  navigation,
+}: StackScreenProps<EditTypes, 'PostsEdit'>): JSX.Element => {
   function SvgToday() {
     return (
       <Svg width="15" height="15" viewBox="0 0 12 12">
@@ -95,6 +96,7 @@ const PostsCreate = ({ navigation }: Props): JSX.Element => {
       </Svg>
     );
   }
+  const { id, name, text, priority, category_id } = route.params;
 
   const {
     control,
@@ -103,22 +105,23 @@ const PostsCreate = ({ navigation }: Props): JSX.Element => {
   } = useForm();
   const dispatch = useDispatch();
   const onSubmit = (data: FormData) => {
-    data.category_id = type;
-    data.priority = priority;
-    dispatch(postsActions.addPostDataTrigger(data));
+    data.id = id;
+    data.category_id = typeState;
+    data.priority = priorityState;
+    dispatch(postsActions.updatePostDataTrigger(data));
   };
 
-  const [type, setType] = useState(1);
-  const [priority, setPriority] = useState(0);
+  const [typeState, setType] = useState(category_id);
+  const [priorityState, setPriority] = useState(priority);
 
-  const isAdd = useSelector(selectIsAdd);
+  const isUpdate = useSelector(selectIsUpdate);
 
   useEffect(() => {
-    if (isAdd) {
+    if (isUpdate) {
       navigation.goBack();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAdd]);
+  }, [isUpdate]);
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
@@ -138,7 +141,7 @@ const PostsCreate = ({ navigation }: Props): JSX.Element => {
             />
           )}
           name="title"
-          defaultValue=""
+          defaultValue={name}
         />
         {errors.title?.type === 'required' && (
           <ValidationError message={'This field is required'} />
@@ -159,14 +162,14 @@ const PostsCreate = ({ navigation }: Props): JSX.Element => {
             />
           )}
           name="text"
-          defaultValue=""
+          defaultValue={text}
         />
         {errors.description?.type === 'required' && (
           <ValidationError message={'This field is required'} />
         )}
         <View style={styles.types}>
           <TouchableOpacity onPress={() => setType(1)}>
-            <View style={type === 1 ? stylesActive.type : styles.type}>
+            <View style={typeState === 1 ? stylesActive.type : styles.type}>
               <View style={styles.typeImage}>
                 <SvgToday />
               </View>
@@ -174,7 +177,7 @@ const PostsCreate = ({ navigation }: Props): JSX.Element => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setType(2)}>
-            <View style={type === 2 ? stylesActive.type : styles.type}>
+            <View style={typeState === 2 ? stylesActive.type : styles.type}>
               <View style={styles.typeImage}>
                 <SvgWeek />
               </View>
@@ -182,7 +185,7 @@ const PostsCreate = ({ navigation }: Props): JSX.Element => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setType(3)}>
-            <View style={type === 3 ? stylesActive.type : styles.type}>
+            <View style={typeState === 3 ? stylesActive.type : styles.type}>
               <View style={styles.typeImage}>
                 <SvgMonthly />
               </View>
@@ -193,7 +196,9 @@ const PostsCreate = ({ navigation }: Props): JSX.Element => {
         <View style={styles.prioritys}>
           <TouchableOpacity onPress={() => setPriority(0)}>
             <View
-              style={priority === 0 ? stylesActive.priority : styles.priority}>
+              style={
+                priorityState === 0 ? stylesActive.priority : styles.priority
+              }>
               <View style={styles.priorityImage}>
                 <SvgPriority color="#FFFFFF" />
               </View>
@@ -201,7 +206,9 @@ const PostsCreate = ({ navigation }: Props): JSX.Element => {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setPriority(2)}>
             <View
-              style={priority === 2 ? stylesActive.priority : styles.priority}>
+              style={
+                priorityState === 2 ? stylesActive.priority : styles.priority
+              }>
               <View style={styles.priorityImage}>
                 <SvgPriority color="#E19A30" />
               </View>
@@ -209,7 +216,9 @@ const PostsCreate = ({ navigation }: Props): JSX.Element => {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setPriority(1)}>
             <View
-              style={priority === 1 ? stylesActive.priority : styles.priority}>
+              style={
+                priorityState === 1 ? stylesActive.priority : styles.priority
+              }>
               <View style={styles.priorityImage}>
                 <SvgPriority color="#BC181E" />
               </View>
@@ -217,7 +226,7 @@ const PostsCreate = ({ navigation }: Props): JSX.Element => {
           </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={handleSubmit(onSubmit)}>
-          <Button title={'Add Post'} />
+          <Button title={'Save'} />
         </TouchableOpacity>
       </View>
       <LinearGradient
@@ -227,4 +236,4 @@ const PostsCreate = ({ navigation }: Props): JSX.Element => {
     </View>
   );
 };
-export default PostsCreate;
+export default PostsEdit;

@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   LogBox,
+  ActivityIndicator,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import styles from './styles';
@@ -17,6 +18,7 @@ import {
   getPostsDataOther,
   getPostsDataToday,
   getPostsDataYesterday,
+  selectIsLoading,
   todayDate,
   yesterdayDate,
 } from 'app/store/modules/posts/selectors';
@@ -38,11 +40,12 @@ const PostsMain = ({ navigation }: Props): JSX.Element => {
   const dataToday = useSelector(getPostsDataToday);
   const dataYesterday = useSelector(getPostsDataYesterday);
   const dataOther = useSelector(getPostsDataOther);
+  const isFetching = useSelector(selectIsLoading);
   useEffect(() => {
     dispatch(postsactions.fetchDataTrigger());
   }, [dispatch]);
   const renderItem = ({ item }: renderItem) => {
-    return <Post data={item} />;
+    return <Post data={item} navigation={navigation} />;
   };
   function SvgPlus() {
     return (
@@ -57,6 +60,11 @@ const PostsMain = ({ navigation }: Props): JSX.Element => {
   return (
     <ScrollView>
       <View style={styles.wrapper}>
+        {isFetching && (
+          <View style={styles.loader}>
+            <ActivityIndicator size="large" color="#BC181E" />
+          </View>
+        )}
         <View style={styles.container}>
           <TitleSmall text={'Today'} date={todayDate.toString()} />
           <TouchableOpacity onPress={() => navigation.navigate('PostsCreate')}>

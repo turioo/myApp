@@ -10,11 +10,19 @@ import { actions as profileActions } from '../store/modules/profile/slice';
 import { fetchProfileSaga } from '../store/modules/profile/saga';
 
 import { actions as postsActions } from '../store/modules/posts/slice';
-import { fetchPostsSaga } from '../store/modules/posts/saga';
+import {
+  addPostSaga,
+  deletePostSaga,
+  fetchPostsSaga,
+  updatePostSaga,
+} from '../store/modules/posts/saga';
 
 export function* watchSagas() {
   yield takeLatest(loginActions.fetchDataTrigger.type, fetchLoginSaga);
   yield takeLatest(logoutActions.fetchDataTrigger.type, fetchLogoutSaga);
   yield takeLatest(profileActions.fetchDataTrigger.type, fetchProfileSaga);
   yield takeLatest(postsActions.fetchDataTrigger.type, fetchPostsSaga);
+  yield takeLatest(postsActions.addPostDataTrigger.type, addPostSaga);
+  yield takeLatest(postsActions.deletePostDataTrigger.type, deletePostSaga);
+  yield takeLatest(postsActions.updatePostDataTrigger.type, updatePostSaga);
 }

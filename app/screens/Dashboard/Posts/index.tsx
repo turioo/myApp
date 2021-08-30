@@ -7,8 +7,10 @@ import {
 
 import PostsMain from 'app/screens/Dashboard/Posts/PostsMain';
 import PostsCreate from 'app/screens/Dashboard/Posts/PostsCreate';
+import PostsEdit from 'app/screens/Dashboard/Posts/PostsEdit';
+import { EditTypes } from 'app/screens/Dashboard/Posts/types';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<EditTypes>();
 
 const Posts: React.FC = () => {
   return (
@@ -30,6 +32,13 @@ const Posts: React.FC = () => {
         component={PostsCreate}
         options={{
           title: 'PostsCreate',
+        }}
+      />
+      <Stack.Screen
+        name="PostsEdit"
+        component={PostsEdit}
+        options={{
+          title: 'PostsEdit',
         }}
       />
     </Stack.Navigator>

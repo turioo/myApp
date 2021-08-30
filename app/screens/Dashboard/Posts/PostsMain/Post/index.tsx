@@ -1,13 +1,19 @@
 import React from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import Svg, { Path } from 'react-native-svg';
 import { IPost } from 'app/store/modules/posts/types';
+import { useDispatch } from 'react-redux';
+import { actions as postsActions } from 'app/store/modules/posts/slice';
 
 type IData = {
   data: IPost;
+  navigation: {
+    navigate: (param: string, param2: any) => void;
+    goBack: () => void;
+  };
 };
-const Post = ({ data }: IData) => {
+const Post = ({ data, navigation }: IData) => {
   function SvgToday() {
     return (
       <Svg width="15" height="15" viewBox="0 0 12 12">
@@ -60,6 +66,7 @@ const Post = ({ data }: IData) => {
       </Svg>
     );
   }
+  const dispatch = useDispatch();
   return (
     <View style={styles.wrapper}>
       <View style={styles.info}>
@@ -118,7 +125,7 @@ const Post = ({ data }: IData) => {
             {data.lastChangeUser && (
               <View style={styles.edit}>
                 <Text style={styles.editText}>
-                  Edited: {data.updatedAt.date}, {data.updatedAt.time}
+                 Edited: {data.updatedAt.date}, {data.updatedAt.time}
                 </Text>
                 <Image
                   style={styles.editPhoto}
@@ -132,12 +139,26 @@ const Post = ({ data }: IData) => {
         </View>
       </View>
       <View style={styles.tools}>
-        <View style={styles.tool}>
-          <SvgEdit />
-        </View>
-        <View style={styles.tool}>
-          <SvgDelete />
-        </View>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('PostsEdit', {
+              id: data.id,
+              name: data.name,
+              text: data.text,
+              priority: data.priority,
+              category_id: data.category.id,
+            });
+          }}>
+          <View style={styles.tool}>
+            <SvgEdit />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => dispatch(postsActions.deletePostDataTrigger(data.id))}>
+          <View style={styles.tool}>
+            <SvgDelete />
+          </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.line} />
     </View>

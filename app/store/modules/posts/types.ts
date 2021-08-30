@@ -38,7 +38,17 @@ export interface PostsState {
     loading: boolean;
     done: boolean;
     error: string | null;
+    add: boolean;
+    update: boolean;
   };
+}
+
+export interface INewPost {
+  id?: number;
+  title: string;
+  text: string;
+  category_id: number;
+  priority: number;
 }
 
 export type FetchErrorPayload = string | null;

@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
-
+import { StyleSheet, Dimensions } from 'react-native';
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: '#20212E',
     width: '100%',
-    height: '100%',
+    minHeight: Dimensions.get('window').height - 52,
+    position: 'relative',
   },
   background: {
     width: '100%',
@@ -68,6 +68,17 @@ const styles = StyleSheet.create({
     fontFamily: 'Raleway-Bold',
     fontSize: 18,
     color: '#FFFFFF',
+  },
+  loader: {
+    width: '100%',
+    height: Dimensions.get('window').height - 52,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    backgroundColor: '#20212E',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 100,
   },
 });
 

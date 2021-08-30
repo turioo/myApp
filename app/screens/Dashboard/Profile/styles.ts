@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: '#20212E',
     width: '100%',
-    height: '100%',
+    minHeight: Dimensions.get('window').height - 52,
     display: 'flex',
   },
   background: {
@@ -39,6 +39,17 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     marginTop: 10,
+  },
+  loader: {
+    width: '100%',
+    height: Dimensions.get('window').height - 52,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    backgroundColor: '#20212E',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 100,
   },
 });
 

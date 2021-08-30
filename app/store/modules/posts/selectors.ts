@@ -50,6 +50,14 @@ export const selectIsLoading = createSelector(
   [selectDomain],
   profileState => profileState.fetch.loading,
 );
+export const selectIsAdd = createSelector(
+  [selectDomain],
+  profileState => profileState.fetch.add,
+);
+export const selectIsUpdate = createSelector(
+  [selectDomain],
+  profileState => profileState.fetch.update,
+);
 
 export const selectDone = createSelector(
   [selectDomain],

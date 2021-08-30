@@ -6,5 +6,7 @@ export const initialState: PostsState = {
     loading: false,
     done: false,
     error: null,
+    add: false,
+    update: false,
   },
 };
