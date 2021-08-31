@@ -3,12 +3,12 @@ import { TextInput } from 'react-native';
 import styles from './styles';
 
 type Props = {
-  value: string;
+  value?: string;
   placeholder: string;
   multiline?: boolean;
-  security: boolean;
-  onBlur: () => void;
-  onChangeText: () => void;
+  security?: boolean;
+  onBlur?: () => void;
+  onChangeText?: () => void;
 };
 
 const Input = ({

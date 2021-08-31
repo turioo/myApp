@@ -1,13 +1,11 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: '#20212E',
     width: '100%',
-    height: '100%',
+    minHeight: Dimensions.get('window').height - 52,
     display: 'flex',
-    justifyContent: 'center',
-    position: 'relative',
   },
   background: {
     width: '100%',
@@ -20,9 +18,32 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   container: {
+    marginTop: 100,
     paddingHorizontal: 15,
     zIndex: 3,
     alignItems: 'center',
+  },
+  logout: {
+    position: 'absolute',
+    right: 20,
+    top: 25,
+  },
+  info: {
+    fontFamily: 'Raleway-Bold',
+    color: 'white',
+    fontSize: 20,
+    marginTop: 10,
+  },
+  loader: {
+    width: '100%',
+    height: Dimensions.get('window').height - 52,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    backgroundColor: '#20212E',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 100,
   },
   photo: {
     width: 74,

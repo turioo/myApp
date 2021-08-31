@@ -29,3 +29,23 @@ export function* fetchLoginSaga({
     yield put(loginActions.fetchDataFulfilled());
   }
 }
+export function* fetchRegSaga({
+  payload,
+}: ReturnType<typeof loginActions.fetchDataTrigger>) {
+  try {
+    const { accessToken } = yield call(services.postRegData, payload);
+    yield put(loginActions.fetchDataSuccess());
+    yield put(appActions.autoLoginSetToken({ token: accessToken }));
+    yield call(setAuthAccessToken, accessToken);
+  } catch (err) {
+    yield put(loginActions.fetchDataFailed(err));
+    Toast.show({
+      type: 'error',
+      position: 'bottom',
+      visibilityTime: 4000,
+      autoHide: true,
+    });
+  } finally {
+    yield put(loginActions.fetchDataFulfilled());
+  }
+}

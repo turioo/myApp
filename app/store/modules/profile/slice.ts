@@ -24,6 +24,23 @@ const slice = createSlice({
       state.fetch.loading = false;
       state.fetch.done = false;
     },
+    updateDataTrigger(state, _action) {
+      state.data = null;
+      state.fetch.loading = true;
+      state.fetch.done = false;
+      state.fetch.error = null;
+    },
+    updateDataSuccess(state, action: PayloadAction<IProfile>) {
+      state.fetch.done = true;
+      state.data = action.payload;
+    },
+    updateDataFailed(state, action: PayloadAction<FetchErrorPayload>) {
+      state.fetch.error = action.payload;
+    },
+    updateDataFulfilled(state) {
+      state.fetch.loading = false;
+      state.fetch.done = false;
+    },
   },
 });
 

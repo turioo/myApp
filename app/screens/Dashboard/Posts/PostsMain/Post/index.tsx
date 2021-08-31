@@ -71,19 +71,49 @@ const Post = ({ data, navigation }: IData) => {
     <View style={styles.wrapper}>
       <View style={styles.info}>
         {data.priority === 1 && (
-          <View style={styles.priorityRed}>
-            {data.status === 1 && <View style={styles.priorityRoundRed} />}
-          </View>
+          <TouchableOpacity
+            onPress={() =>
+              dispatch(
+                postsActions.updatePostDataTrigger({
+                  id: data.id,
+                  status: data.status === 0 ? 1 : 0,
+                }),
+              )
+            }>
+            <View style={styles.priorityRed}>
+              {data.status === 1 && <View style={styles.priorityRoundRed} />}
+            </View>
+          </TouchableOpacity>
         )}
         {data.priority === 2 && (
-          <View style={styles.priorityYellow}>
-            {data.status === 1 && <View style={styles.priorityRoundYellow} />}
-          </View>
+          <TouchableOpacity
+            onPress={() =>
+              dispatch(
+                postsActions.updatePostDataTrigger({
+                  id: data.id,
+                  status: data.status === 0 ? 1 : 0,
+                }),
+              )
+            }>
+            <View style={styles.priorityYellow}>
+              {data.status === 1 && <View style={styles.priorityRoundYellow} />}
+            </View>
+          </TouchableOpacity>
         )}
         {data.priority === 0 && (
-          <View style={styles.priorityWhite}>
-            {data.status === 1 && <View style={styles.priorityRoundWhite} />}
-          </View>
+          <TouchableOpacity
+            onPress={() =>
+              dispatch(
+                postsActions.updatePostDataTrigger({
+                  id: data.id,
+                  status: data.status === 0 ? 1 : 0,
+                }),
+              )
+            }>
+            <View style={styles.priorityWhite}>
+              {data.status === 1 && <View style={styles.priorityRoundWhite} />}
+            </View>
+          </TouchableOpacity>
         )}
         <View style={styles.data}>
           <View style={styles.title}>
@@ -125,7 +155,7 @@ const Post = ({ data, navigation }: IData) => {
             {data.lastChangeUser && (
               <View style={styles.edit}>
                 <Text style={styles.editText}>
-                 Edited: {data.updatedAt.date}, {data.updatedAt.time}
+                  Edited: {data.updatedAt.date}, {data.updatedAt.time}
                 </Text>
                 <Image
                   style={styles.editPhoto}

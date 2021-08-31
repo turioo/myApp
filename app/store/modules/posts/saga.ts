@@ -57,7 +57,6 @@ export function* updatePostSaga({
   payload,
 }: ReturnType<typeof postsActions.updatePostDataTrigger>) {
   try {
-    yield console.log('fsdfd');
     const post: IPost = yield call(updatePostData, payload);
     yield put(postsActions.updatePostDataSuccess(post));
   } catch (err) {

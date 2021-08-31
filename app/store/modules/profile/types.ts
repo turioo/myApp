@@ -14,5 +14,10 @@ export interface ProfileState {
     error: string | null;
   };
 }
+export interface IUpdateProfile {
+  email: string;
+  name: string;
+  photo: string;
+}
 
 export type FetchErrorPayload = string | null;

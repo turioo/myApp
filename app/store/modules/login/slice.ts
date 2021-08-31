@@ -12,6 +12,11 @@ const slice = createSlice({
       state.done = false;
       state.error = null;
     },
+    fetchRegDataTrigger(state, _action: PayloadAction<FetchTriggerPayload>) {
+      state.loading = true;
+      state.done = false;
+      state.error = null;
+    },
     fetchDataSuccess(state) {
       state.done = true;
     },

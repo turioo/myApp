@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect } from 'react';
+import { Image, View, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import styles from './styles';
-import Header from '../../../features/Header';
-import Input from '../../../atoms/Input';
-import Title from '../../../atoms/Title';
-import Button from '../../../atoms/Button';
-import { useForm, Controller } from 'react-hook-form';
-import ValidationError from '../../../atoms/ValidationError';
-import { actions } from 'app/store/modules/login/slice';
-import { useDispatch } from 'react-redux';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { useDispatch, useSelector } from 'react-redux';
+import Button from 'app/atoms/Button/index';
+import {getData, selectDone} from 'app/store/modules/profile/selectors';
+import Input from '../../../../atoms/Input';
+import Header from '../../../../features/Header';
 import Svg, { Path } from 'react-native-svg';
+import { Controller, useForm } from 'react-hook-form';
+import ValidationError from '../../../../atoms/ValidationError';
+import { actions } from 'app/store/modules/profile/slice';
 
 type Props = {
   navigation: {
@@ -19,14 +18,7 @@ type Props = {
     goBack: () => void;
   };
 };
-type FormData = {
-  photo: object | null;
-  name: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
-};
-const SignUp = ({ navigation }: Props): JSX.Element => {
+const ProfileEdit = ({ navigation }: Props): JSX.Element => {
   function SvgCamera() {
     return (
       <Svg width="25" height="20" viewBox="0 0 25 20">
@@ -39,22 +31,20 @@ const SignUp = ({ navigation }: Props): JSX.Element => {
       </Svg>
     );
   }
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const [equal, setEqual] = useState<boolean>(true);
+  const info = useSelector(getData);
+  const isUpdate = useSelector(selectDone);
   const dispatch = useDispatch();
   const onSubmit = (data: FormData) => {
     // @ts-ignore
-    data.photo = photo.assets[0].base64;
-    data.password === data.password_confirmation
-      ? dispatch(actions.fetchRegDataTrigger(data))
-      : // ?
-        setEqual(false);
+    photo !== null ? (data.photo = photo.assets[0].base64) : '';
+    dispatch(actions.updateDataTrigger(data));
   };
+  useEffect(() => {
+    if (isUpdate) {
+      navigation.goBack();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isUpdate]);
   const [photo, setPhoto] = React.useState(null);
   var ImagePicker = require('react-native-image-picker');
   const handleChoosePhoto = () => {
@@ -68,12 +58,15 @@ const SignUp = ({ navigation }: Props): JSX.Element => {
       },
     );
   };
-
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   return (
     <View style={styles.wrapper}>
       <Header navigation={navigation} />
       <View style={styles.container}>
-        <Title text="Sign Up" />
         <TouchableOpacity onPress={handleChoosePhoto}>
           <View style={styles.photo}>
             <View style={styles.photoicon}>
@@ -82,8 +75,10 @@ const SignUp = ({ navigation }: Props): JSX.Element => {
             <View style={styles.blur} />
             <Image
               style={styles.photo}
-              // @ts-ignore
-              source={{ uri: `${photo?.assets[0].uri}` }}
+              source={{
+                // @ts-ignore
+                uri: photo === null ? info?.photo : `${photo?.assets[0].uri}`,
+              }}
             />
           </View>
         </TouchableOpacity>
@@ -102,9 +97,11 @@ const SignUp = ({ navigation }: Props): JSX.Element => {
             />
           )}
           name="name"
-          defaultValue=""
+          defaultValue={info?.name}
         />
-        {errors.name && <ValidationError message={'This field is required'} />}
+        {errors.name?.type === 'required' && (
+          <ValidationError message={'This field is required'} />
+        )}
         <Controller
           control={control}
           rules={{
@@ -121,7 +118,7 @@ const SignUp = ({ navigation }: Props): JSX.Element => {
             />
           )}
           name="email"
-          defaultValue=""
+          defaultValue={info?.email}
         />
         {errors.email?.type === 'required' && (
           <ValidationError message={'This field is required'} />
@@ -129,56 +126,8 @@ const SignUp = ({ navigation }: Props): JSX.Element => {
         {errors.email?.type === 'pattern' && (
           <ValidationError message={'Enter correct format'} />
         )}
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-            minLength: 8,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              placeholder="Password"
-              security={true}
-            />
-          )}
-          name="password"
-          defaultValue=""
-        />
-        {errors.password?.type === 'required' && (
-          <ValidationError message={'This field is required'} />
-        )}
-        {errors.password?.type === 'minLength' && (
-          <ValidationError message={'Minimal length 8 characters'} />
-        )}
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              placeholder="Repeat password"
-              security={true}
-            />
-          )}
-          name="password_confirmation"
-          defaultValue=""
-        />
-        {errors.password_confirmation?.type === 'required' && (
-          <ValidationError message={'This field is required'} />
-        )}
-        {!equal && (
-          <ValidationError message={'This field is not equal to password'} />
-        )}
-
         <TouchableOpacity onPress={handleSubmit(onSubmit)}>
-          <Button title={'Sign Up'} />
+          <Button title={'Save'} />
         </TouchableOpacity>
       </View>
       <LinearGradient
@@ -189,4 +138,4 @@ const SignUp = ({ navigation }: Props): JSX.Element => {
   );
 };
 
-export default SignUp;
+export default ProfileEdit;
