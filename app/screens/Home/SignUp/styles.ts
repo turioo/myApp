@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -45,6 +45,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#2A2A2A',
     zIndex: 9,
     opacity: 0.5,
+  },
+  loader: {
+    width: '100%',
+    height: Dimensions.get('window').height,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    backgroundColor: '#20212E',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 100,
   },
 });
 

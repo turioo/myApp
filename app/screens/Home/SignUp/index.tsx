@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import styles from './styles';
 import Header from '../../../features/Header';
@@ -9,9 +9,10 @@ import Button from '../../../atoms/Button';
 import { useForm, Controller } from 'react-hook-form';
 import ValidationError from '../../../atoms/ValidationError';
 import { actions } from 'app/store/modules/login/slice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Svg, { Path } from 'react-native-svg';
+import { selectIsLoading } from 'app/store/modules/login/selectors';
 
 type Props = {
   navigation: {
@@ -68,9 +69,14 @@ const SignUp = ({ navigation }: Props): JSX.Element => {
       },
     );
   };
-
+  const isFetching = useSelector(selectIsLoading);
   return (
     <View style={styles.wrapper}>
+      {isFetching && (
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color="#BC181E" />
+        </View>
+      )}
       <Header navigation={navigation} />
       <View style={styles.container}>
         <Title text="Sign Up" />
